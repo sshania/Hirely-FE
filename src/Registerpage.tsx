@@ -30,7 +30,7 @@ const RegisterPage: React.FC = () => {
           </p>
           {/* Form */}
           <form className="mt-6">
-            <input className="border p-2 w-full rounded" placeholder="Full Name" />
+            <input className="border p-2 w-full rounded" placeholder="Username" />
             <input className="border p-2 w-full rounded mt-3" placeholder="E-mail Address" />
             <input className="border p-2 w-full rounded mt-3" placeholder="Password" type="password" />
             <div className="flex items-center mt-3">
