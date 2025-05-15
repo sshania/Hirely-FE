@@ -1,4 +1,5 @@
 import React from "react";
+import logo from "../src/assets/Hirely.png";
 
 const LoginPage: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const LoginPage: React.FC = () => {
             backgroundPosition: "center" 
         }}
         >
+          <img src={logo} alt="Hirely Logo" className="w-24 h-30 mb-4" />
           <h1 className="text-3xl font-bold text-black">Hirely</h1>
           <p className="mt-2 text-black">Connecting others</p>
         </div>
