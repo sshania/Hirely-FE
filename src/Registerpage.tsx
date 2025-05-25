@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const RegisterPage: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const passedEmail = (location.state as { email?: string })?.email || "";
+
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(passedEmail);
   const [password, setPassword] = useState("");
   const [agree, setAgree] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (passedEmail) {
+      setEmail(passedEmail);
+    }
+  }, [passedEmail]);
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!agree) {
       alert("Please agree to the terms and policies.");
       return;
@@ -22,24 +32,23 @@ const RegisterPage: React.FC = () => {
     try {
       const response = await fetch("https://your-api.com/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username, email, password })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password }),
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Registration failed.");
-      }
-
+      if (!response.ok) throw new Error(data.message || "Registration failed.");
       alert("Registration successful!");
     } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLoginRedirect = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate("/login");
   };
 
   return (
@@ -61,7 +70,10 @@ const RegisterPage: React.FC = () => {
         <div className="w-1/2 bg-white p-10">
           <h2 className="text-2xl font-bold text-center">Sign Up Now!</h2>
           <p className="text-center text-gray-600">
-            Already have an account? <a href="#" className="text-blue-500">Login Here!</a>
+            Already have an account?{" "}
+            <a href="#" className="text-blue-500" onClick={handleLoginRedirect}>
+              Login Here!
+            </a>
           </p>
           <form className="mt-6" onSubmit={handleRegister}>
             <input
@@ -90,7 +102,9 @@ const RegisterPage: React.FC = () => {
                 checked={agree}
                 onChange={(e) => setAgree(e.target.checked)}
               />
-              <span className="text-gray-600 text-sm">I have read and agree to the terms and policies</span>
+              <span className="text-gray-600 text-sm">
+                I have read and agree to the terms and policies
+              </span>
             </div>
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
             <button
