@@ -30,7 +30,7 @@ const RegisterPage: React.FC = () => {
     setError("");
 
     try {
-      const response = await fetch("https://your-api.com/register", {
+      const response = await fetch("https://25d5-103-80-236-175.ngrok-free.app", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
