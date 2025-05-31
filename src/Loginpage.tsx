@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 import logo from "../src/assets/Hirely.png";
 
-
-
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -31,17 +29,8 @@ const LoginPage: React.FC = () => {
       const token = response.data.access_token;
       localStorage.setItem("token", token);
 
-      const profileRes = await axios.get("https://api.hirely.my.id/profile/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      localStorage.setItem("hirelyUsername", profileRes.data.username); 
-
       alert("Login berhasil!");
-      // window.location.href = "/home";
-      navigate("/Homepage")
+      navigate("/Homepage");
     } catch (error: any) {
       console.error(error);
       alert("Login gagal: " + (error.response?.data?.detail || "Unknown error"));
@@ -51,12 +40,13 @@ const LoginPage: React.FC = () => {
   return (
     <div className="flex items-center justify-center h-screen w-screen bg-gray-100">
       <div className="flex w-[900px] shadow-lg rounded-lg overflow-hidden">
-        <div 
+        {/* Left Panel */}
+        <div
           className="w-1/2 flex flex-col justify-center items-center p-10 text-white"
-          style={{ 
-            backgroundImage: "url('/Hirelybg.jpg')", 
-            backgroundSize: "cover", 
-            backgroundPosition: "center" 
+          style={{
+            backgroundImage: "url('/Hirelybg.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
         >
           <img src={logo} alt="Hirely Logo" className="w-24 h-30 mb-4" />
@@ -64,10 +54,17 @@ const LoginPage: React.FC = () => {
           <p className="mt-2 text-black">Connecting others</p>
         </div>
 
+        {/* Right Panel */}
         <div className="w-1/2 bg-white p-10">
           <h2 className="text-2xl font-bold text-center text-black">Welcome!</h2>
           <p className="text-center text-gray-600">
-            Don't have an account? <a href="#" className="text-blue-500">Sign Up Here!</a>
+            Don't have an account?{" "}
+            <span
+              onClick={() => navigate("/register")}
+              className="text-blue-500 hover:underline cursor-pointer"
+            >
+              Sign Up Here!
+            </span>
           </p>
 
           <form className="mt-6" onSubmit={handleLogin}>
@@ -90,10 +87,18 @@ const LoginPage: React.FC = () => {
                 <input type="checkbox" className="mr-2" />
                 <span className="text-gray-600 text-sm">Remember me</span>
               </div>
-              <a href="#" className="text-blue-500 text-sm">Forgot Password?</a>
+              <span
+                onClick={() => navigate("/forgotPassword")}
+                className="text-blue-500 text-sm hover:underline cursor-pointer"
+              >
+                Forgot Password?
+              </span>
             </div>
 
-            <button className="w-full mt-5 bg-black text-white py-2 rounded" type="submit">
+            <button
+              className="w-full mt-5 bg-black text-white py-2 rounded"
+              type="submit"
+            >
               Login
             </button>
           </form>

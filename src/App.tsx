@@ -3,11 +3,13 @@ import LandingPage from "./Landingpage";
 import RegisterPage from "./Registerpage";
 import HomePage from "./Homepage";
 import LoginPage from "./Loginpage"; 
-import JobMatchPage from "./JobMatchmakingPage"; 
+import JobMatchPage from "./JobMatchmaking"; 
 import ResultPage from "./ResultPage";
 import ProfilePage from "./Profilepage";
 import EditProfile from "./EditProfile";
-import ProfileFormPage from "./ProfileFormpage"; // <-- import new form page
+import ProfileFormPage from "./ProfileFormpage"; 
+import ChangePassowrd from "./changePass"; 
+import ForgotPassword from "./forgotPass"; 
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Route path="/result" element={<ResultPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/editprofile" element={<EditProfile />} />
+        <Route path="/changePassword" element={<ChangePassowrd />} />
+        <Route path="/forgotPassword " element={<ForgotPassword />} />
         <Route path="/profileform" element={<ProfileFormPage />} />  {/* <-- new route */}
       </Routes>
     </Router>
