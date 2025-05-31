@@ -77,7 +77,7 @@ const JobMatchPage: React.FC = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-green-600 text-white font-semibold py-3 rounded hover:bg-green-700"
+            className="w-full bg-green-700 text-white font-semibold py-3 rounded hover:bg-green-700"
           >
             Find my match
           </button>
