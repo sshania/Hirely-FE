@@ -25,7 +25,7 @@ const ResultPage: React.FC = () => {
 
         <div className="flex space-x-6">
           {/* User Profile Section */}
-          <div className="bg-green-700 text-white p-10 rounded-lg w-1/6 h-119 items-center ml-20">
+          <div className="bg-green-700 text-white p-10 rounded-lg w-1/6 h-119 items-center ml-10">
             <div className="w-32 h-32 bg-black mx-auto mb-4"></div>
                 <div className="w-full flex flex-col items-start text-left -ml-4">
                 <p style={{ fontSize: "30px" }} className="mb-10 self-center text font-bold ml-6">USERNAME</p>
