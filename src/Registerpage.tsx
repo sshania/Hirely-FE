@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const RegisterPage: React.FC = () => {
@@ -9,6 +10,8 @@ const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState(passedEmail);
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [agree, setAgree] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -21,8 +24,14 @@ const RegisterPage: React.FC = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!agree) {
       alert("Please agree to the terms and policies.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Password and confirmation do not match.");
       return;
     }
 
@@ -30,17 +39,20 @@ const RegisterPage: React.FC = () => {
     setError("");
 
     try {
-      const response = await fetch("https://25d5-103-80-236-175.ngrok-free.app", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
+      await axios.post("https://api.hirely.my.id/auth/register", {
+        User_Name: username,
+        User_Password: password,
+        confirm_password: confirmPassword,
+        User_Email: email,
+        User_Phone_Number: phone,
+        terms_accepted: agree
       });
 
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Registration failed.");
       alert("Registration successful!");
+      navigate("/login");
     } catch (err: any) {
-      setError(err.message);
+      console.log("❌ Registration error:", err.response?.data);
+      setError(err.response?.data?.detail || "Registration failed.");
     } finally {
       setLoading(false);
     }
@@ -59,7 +71,7 @@ const RegisterPage: React.FC = () => {
           style={{
             backgroundImage: "url('/Hirelybg.jpg')",
             backgroundSize: "cover",
-            backgroundPosition: "center",
+            backgroundPosition: "center"
           }}
         >
           <img src="/HirelyLogo.png" alt="Hirely Logo" className="h-24 w-auto mb-4" />
@@ -75,26 +87,44 @@ const RegisterPage: React.FC = () => {
               Login Here!
             </a>
           </p>
+
           <form className="mt-6" onSubmit={handleRegister}>
             <input
-              className="border p-2 w-full rounded"
+              className="border p-2 w-full rounded text-black"
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             <input
-              className="border p-2 w-full rounded mt-3"
+              type="email"
+              className="border p-2 w-full rounded mt-3 text-black"
               placeholder="E-mail Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
-              className="border p-2 w-full rounded mt-3"
+              className="border p-2 w-full rounded mt-3 text-black"
+              placeholder="Phone Number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            <input
+              className="border p-2 w-full rounded mt-3 text-black"
               placeholder="Password"
               type="password"
+              minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            <input
+              className="border p-2 w-full rounded mt-3 text-black"
+              placeholder="Confirm Password"
+              type="password"
+              minLength={8}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+
             <div className="flex items-center mt-3">
               <input
                 type="checkbox"
@@ -102,11 +132,13 @@ const RegisterPage: React.FC = () => {
                 checked={agree}
                 onChange={(e) => setAgree(e.target.checked)}
               />
-              <span className="text-gray-600 text-sm">
+              <span className="text-black text-sm">
                 I have read and agree to the terms and policies
               </span>
             </div>
+
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+
             <button
               type="submit"
               className="w-full mt-5 bg-black text-white py-2 rounded"
