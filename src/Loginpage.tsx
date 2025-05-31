@@ -1,26 +1,47 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import logo from "../src/assets/Hirely.png";
 
 
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://api.hirely.my.id/auth/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://api.hirely.my.id/auth/login",
+        {
+          email,
+          User_Password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      const token = response.data.token;
+      const token = response.data.access_token;
       localStorage.setItem("token", token);
 
+      const profileRes = await axios.get("https://api.hirely.my.id/profile/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      localStorage.setItem("hirelyUsername", profileRes.data.username); 
+
       alert("Login berhasil!");
-      window.location.href = "/Homepage";
+      // window.location.href = "/home";
+      navigate("/Homepage")
     } catch (error: any) {
       console.error(error);
       alert("Login gagal: " + (error.response?.data?.detail || "Unknown error"));
