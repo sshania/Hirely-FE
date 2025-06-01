@@ -16,6 +16,14 @@ const RegisterPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // 🔐 Redirect ke Homepage jika sudah login
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token && token !== "undefined" && token !== "") {
+      navigate("/Homepage");
+    }
+  }, []); // hanya jalan sekali saat mount
+
   useEffect(() => {
     if (passedEmail) {
       setEmail(passedEmail);
@@ -45,7 +53,7 @@ const RegisterPage: React.FC = () => {
         confirm_password: confirmPassword,
         User_Email: email,
         User_Phone_Number: phone,
-        terms_accepted: agree
+        terms_accepted: agree,
       });
 
       alert("Registration successful!");
@@ -71,7 +79,7 @@ const RegisterPage: React.FC = () => {
           style={{
             backgroundImage: "url('/Hirelybg.jpg')",
             backgroundSize: "cover",
-            backgroundPosition: "center"
+            backgroundPosition: "center",
           }}
         >
           <img src="/HirelyLogo.png" alt="Hirely Logo" className="h-24 w-auto mb-4" />
