@@ -33,13 +33,34 @@ const RegisterPage: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!agree) {
-      alert("Please agree to the terms and policies.");
+    // Validasi kosong
+    if (!username || !email || !phone || !password || !confirmPassword) {
+      setError("All fields are required.");
       return;
     }
 
+    // Validasi email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    // Validasi phone number 12 digit angka
+    const phoneRegex = /^\d{12}$/;
+    if (!phoneRegex.test(phone)) {
+      setError("Phone number must be exactly 12 digits.");
+      return;
+    }
+
+    // Validasi password dan confirmation
     if (password !== confirmPassword) {
       setError("Password and confirmation do not match.");
+      return;
+    }
+
+    if (!agree) {
+      alert("Please agree to the terms and policies.");
       return;
     }
 
@@ -67,7 +88,7 @@ const RegisterPage: React.FC = () => {
       setLoading(false);
     }
   };
-
+ 
   const handleLoginRedirect = (e: React.MouseEvent) => {
     e.preventDefault();
     navigate("/login");

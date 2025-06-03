@@ -24,7 +24,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/changePassword" element={<ChangePassowrd />} />
-        <Route path="/forgotPassword " element={<ForgotPassword />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/profileform" element={<ProfileFormPage />} />  {/* <-- new route */}
       </Routes>
     </Router>
