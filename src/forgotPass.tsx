@@ -3,41 +3,55 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../src/assets/Hirely.png";
 
-const ChangePassword: React.FC = () => {
+const ForgotPassword: React.FC = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const [token, setToken] = useState("");
+  const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [tokenValid, setTokenValid] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [resending, setResending] = useState(false);
 
-  const handleSubmit = async () => {
-    setError(null);
-    setSuccess(false);
-
-    if (newPassword !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
+  // Resend token to email
+  const handleResendToken = async () => {
+    setStatus(null);
+    setResending(true);
     try {
       await axios.post(
-        // "https://api.hirely.my.id/auth/reset-password"
-        "https://b98e-103-80-236-171.ngrok-free.app/auth/reset-password"
-        , {
-        email,
-        new_password: newPassword,
-        confirm_password: confirmPassword,
-      });
-
-      setSuccess(true);
-      setEmail("");
-      setNewPassword("");
-      setConfirmPassword("");
-    } catch (err) {
-      setError("Failed to reset password. Please try again.");
+        " https://api-hirely.localto.net/auth/forgot-password",
+        { email }
+      );
+      setStatus({ type: "success", message: "Kode token telah dikirim ulang ke email Anda." });
+    } catch (err: any) {
+      setStatus({ type: "error", message: err.response?.data?.detail || "Gagal mengirim ulang kode. Coba lagi." });
+    } finally {
+      setResending(false);
     }
+  };
+
+  // Check token validity
+  const handleCheckToken = async () => {
+    setStatus(null);
+    setChecking(true);
+    try {
+      await axios.post(
+        "https://api-hirely.localto.net/auth/verify-token",
+        { email, token }
+      );
+      setStatus({ type: "success", message: "Token valid. Silakan lanjut ubah password." });
+      setTokenValid(true);
+    } catch (err: any) {
+      setStatus({ type: "error", message: err.response?.data?.detail || "Token salah atau sudah kadaluarsa." });
+      setTokenValid(false);
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  // Go to change password page
+  const handleGoToChangePassword = () => {
+    navigate("/changePassword", { state: { email, token } });
   };
 
   return (
@@ -57,56 +71,58 @@ const ChangePassword: React.FC = () => {
         {/* Content */}
         <div className="p-6 text-sm text-black space-y-4">
           <h2 className="text-xl font-semibold text-center text-green-700">
-            Change Password
+            Forgot Password
           </h2>
 
-          {error && (
-            <p className="text-red-500 bg-red-100 px-3 py-2 rounded">{error}</p>
-          )}
-          {success && (
-            <p className="text-green-600 bg-green-100 px-3 py-2 rounded">
-              Password changed successfully!
-            </p>
+          {status && (
+            <p className={`px-3 py-2 rounded text-center font-medium ${status.type === "success" ? "text-green-600 bg-green-100" : "text-red-500 bg-red-100"}`}>{status.message}</p>
           )}
 
-          <div className="flex flex-col">
-            <label className="font-medium mb-1">Email</label>
-            <input
-              type="email"
-              className="border rounded px-3 py-2 text-sm"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-            />
-          </div>
+          {/* Email */}
+          <input
+            type="email"
+            className="border rounded px-3 py-2 text-sm w-full"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+          />
 
-          <div className="flex flex-col">
-            <label className="font-medium mb-1">New Password</label>
-            <input
-              type="password"
-              className="border rounded px-3 py-2 text-sm"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="Enter new password"
-            />
-          </div>
+          {/* Token */}
+          <input
+            type="text"
+            className="border rounded px-3 py-2 text-sm w-full"
+            value={token}
+            onChange={(e) => setToken(e.target.value)}
+            placeholder="Token"
+          />
 
-          <div className="flex flex-col">
-            <label className="font-medium mb-1">Confirm Password</label>
-            <input
-              type="password"
-              className="border rounded px-3 py-2 text-sm"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm new password"
-            />
-          </div>
+          {/* Check/Change Password Button */}
+          {!tokenValid ? (
+            <button
+              onClick={handleCheckToken}
+              className="w-full mt-2 bg-green-700 text-white py-2 rounded hover:bg-green-800 font-semibold"
+              disabled={checking || !token || !email}
+              type="button"
+            >
+              {checking ? "Checking..." : "Check Token"}
+            </button>
+          ) : (
+            <button
+              onClick={handleGoToChangePassword}
+              className="w-full mt-2 bg-green-700 text-white py-2 rounded hover:bg-green-800 font-semibold"
+            >
+              Change Password
+            </button>
+          )}
 
+          {/* Resend Token */}
           <button
-            onClick={handleSubmit}
-            className="w-full mt-4 bg-green-700 text-white py-2 rounded hover:bg-green-800 font-semibold"
+            onClick={handleResendToken}
+            className="w-full mt-2 bg-green-100 text-green-700 py-2 rounded hover:bg-green-200 font-semibold border border-green-300"
+            disabled={resending || !email}
+            type="button"
           >
-            Submit
+            {resending ? "Mengirim..." : "Resend Token"}
           </button>
         </div>
       </div>
@@ -114,4 +130,4 @@ const ChangePassword: React.FC = () => {
   );
 };
 
-export default ChangePassword;
+export default ForgotPassword;
