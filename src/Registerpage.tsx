@@ -47,7 +47,9 @@ const RegisterPage: React.FC = () => {
     setError("");
 
     try {
-      await axios.post("https://api.hirely.my.id/auth/register", {
+      await axios.post(
+        // "https://api.hirely.my.id/auth/register",
+        "https://api-hirely.localto.net/auth/register", {
         User_Name: username,
         User_Password: password,
         confirm_password: confirmPassword,

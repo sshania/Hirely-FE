@@ -39,7 +39,10 @@ const EditProfile: React.FC = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get<UserData>("https://api.hirely.my.id/user/data", {
+      .get<UserData>(
+        // "https://api.hirely.my.id/user/data"
+        "https://b98e-103-80-236-171.ngrok-free.app/user/data"
+        , {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -71,7 +74,9 @@ const EditProfile: React.FC = () => {
 
     axios
       .put(
-        "https://api.hirely.my.id/user/update",
+        // "https://api.hirely.my.id/user/update"
+        "https://b98e-103-80-236-171.ngrok-free.app/user/update"
+        ,
         {
           User_Name: user.User_Name,
           User_Email: user.User_Email,
