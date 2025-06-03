@@ -29,7 +29,10 @@ const ProfilePage: React.FC = () => {
     const token = localStorage.getItem("token");
 
     axios
-      .get<UserData>("https://api.hirely.my.id/user/data", {
+      .get<UserData>(
+        // "https://api.hirely.my.id/user/data"
+        "https://api-hirely.localto.net/user/data"
+        , {
         headers: {
           Authorization: `Bearer ${token}`,
         },

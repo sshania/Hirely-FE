@@ -33,9 +33,19 @@ const JobMatchPage: React.FC = () => {
     const fetchData = async () => {
       try {
         const [majorRes, skillRes, userRes] = await Promise.all([
-          axios.get("https://api.hirely.my.id/user/majors"),
-          axios.get("https://api.hirely.my.id/skill/list"),
-          axios.get("https://api.hirely.my.id/user/data", {
+          axios.get(
+            // "https://api.hirely.my.id/user/majors"
+            "https://api-hirely.localto.net/user/majors"
+          ),
+          axios.get(
+            // "https://api.hirely.my.id/skill/list"
+            "https://api-hirely.localto.net/skill/list"
+
+          ),
+          axios.get(
+            // "https://api.hirely.my.id/user/data",
+            "https://api-hirely.localto.net/user/data",
+             {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -74,7 +84,8 @@ const JobMatchPage: React.FC = () => {
 
     try {
       await axios.put(
-        "https://api.hirely.my.id/user/update",
+        // "https://api.hirely.my.id/user/update"
+        "https://api-hirely.localto.net/user/update",
         {
           User_Name: userData.User_Name,
           User_Email: userData.User_Email,
@@ -90,7 +101,8 @@ const JobMatchPage: React.FC = () => {
       );
 
       await axios.post(
-        "https://api.hirely.my.id/skill/add-user",
+        // "https://api.hirely.my.id/skill/add-user",
+        "https://api-hirely.localto.net/skill/add-user",
         {
           Skill_ids: formData.skills.map((s) => s.value),
         },
@@ -98,7 +110,8 @@ const JobMatchPage: React.FC = () => {
       );
 
       await axios.post(
-      "https://api.hirely.my.id/result/match-result",
+      // "https://api.hirely.my.id/result/match-result",
+      "https://api-hirely.localto.net/result/match-result",
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );

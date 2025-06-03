@@ -10,7 +10,6 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // 🔐 Redirect otomatis kalau sudah login
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -22,7 +21,8 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://api.hirely.my.id/auth/login",
+        // "https://api.hirely.my.id/auth/login",
+        "https://api-hirely.localto.net/auth/login",
         {
           email,
           User_Password: password,

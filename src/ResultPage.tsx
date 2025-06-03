@@ -23,7 +23,10 @@ const ResultPage: React.FC = () => {
 
     const fetchUser = async () => {
       try {
-        const res = await axios.get("https://api.hirely.my.id/user/data", {
+        const res = await axios.get(
+          // "https://api.hirely.my.id/user/data"
+          "https://b98e-103-80-236-171.ngrok-free.app/user/data"
+          , {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
@@ -34,7 +37,10 @@ const ResultPage: React.FC = () => {
 
     const fetchJobResults = async () => {
       try {
-        const res = await axios.get("https://api.hirely.my.id/result/history", {
+        const res = await axios.get(
+          // "https://api.hirely.my.id/result/history"
+          "https://api-hirely.localto.net/result/history"
+          , {
           headers: { Authorization: `Bearer ${token}` },
         });
         setJobResults(res.data);

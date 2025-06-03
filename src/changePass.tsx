@@ -22,7 +22,10 @@ const ChangePassword: React.FC = () => {
     }
 
     try {
-      await axios.post("https://api.hirely.my.id/auth/reset-password", {
+      await axios.post(
+        // "https://api.hirely.my.id/auth/reset-password"
+        "https://b98e-103-80-236-171.ngrok-free.app/auth/reset-password"
+        , {
         email,
         new_password: newPassword,
         confirm_password: confirmPassword,
