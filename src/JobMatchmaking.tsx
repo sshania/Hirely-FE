@@ -3,6 +3,7 @@ import axios from "axios";
 import Select, { SingleValue, MultiValue } from "react-select";
 import { useNavigate } from "react-router-dom";
 import logo from "../src/assets/Hirely.png";
+import { baseURL } from "./environment";
 
 type OptionType = {
   label: string;
@@ -35,16 +36,19 @@ const JobMatchPage: React.FC = () => {
         const [majorRes, skillRes, userRes] = await Promise.all([
           axios.get(
             // "https://api.hirely.my.id/user/majors"
-            "https://api-hirely.localto.net/user/majors"
+            // "https://api-hirely.localto.net/user/majors"
+            `${baseURL}/user/majors`
           ),
           axios.get(
             // "https://api.hirely.my.id/skill/list"
-            "https://api-hirely.localto.net/skill/list"
-
+            // "https://api-hirely.localto.net/skill/list"
+            `${baseURL}/skill/list`
           ),
           axios.get(
             // "https://api.hirely.my.id/user/data",
-            "https://api-hirely.localto.net/user/data",
+            // "https://api-hirely.localto.net/user/data"
+            `${baseURL}/user/data`
+            ,
              {
             headers: { Authorization: `Bearer ${token}` },
           }),
@@ -85,7 +89,8 @@ const JobMatchPage: React.FC = () => {
     try {
       await axios.put(
         // "https://api.hirely.my.id/user/update"
-        "https://api-hirely.localto.net/user/update",
+        // "https://api-hirely.localto.net/user/update"
+        `${baseURL}/user/update`,
         {
           User_Name: userData.User_Name,
           User_Email: userData.User_Email,
@@ -102,7 +107,8 @@ const JobMatchPage: React.FC = () => {
 
       await axios.post(
         // "https://api.hirely.my.id/skill/add-user",
-        "https://api-hirely.localto.net/skill/add-user",
+        // "https://api-hirely.localto.net/skill/add-user"
+        `${baseURL}/skill/add-user`,
         {
           Skill_ids: formData.skills.map((s) => s.value),
         },
@@ -111,7 +117,8 @@ const JobMatchPage: React.FC = () => {
 
       await axios.post(
       // "https://api.hirely.my.id/result/match-result",
-      "https://api-hirely.localto.net/result/match-result",
+      // "https://api-hirely.localto.net/result/match-result"
+      `${baseURL}/result/match-result`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../src/assets/Hirely.png";
+import { baseURL } from "./environment";
 
 type JobResult = {
   Job_Title: string;
@@ -25,7 +26,8 @@ const ResultPage: React.FC = () => {
       try {
         const res = await axios.get(
           // "https://api.hirely.my.id/user/data"
-          "https://b98e-103-80-236-171.ngrok-free.app/user/data"
+          // "https://b98e-103-80-236-171.ngrok-free.app/user/data"
+          `${baseURL}/user/data`
           , {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -39,7 +41,8 @@ const ResultPage: React.FC = () => {
       try {
         const res = await axios.get(
           // "https://api.hirely.my.id/result/history"
-          "https://api-hirely.localto.net/result/history"
+          // "https://api-hirely.localto.net/result/history"
+          `${baseURL}/result/history`
           , {
           headers: { Authorization: `Bearer ${token}` },
         });

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../src/assets/Hirely.png";
+import { baseURL } from "./environment";
 
 const ForgotPassword: React.FC = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const ForgotPassword: React.FC = () => {
     setResending(true);
     try {
       await axios.post(
-        " https://api-hirely.localto.net/auth/forgot-password",
+        `${baseURL}/auth/forgot-password`,
         { email }
       );
       setStatus({ type: "success", message: "Kode token telah dikirim ulang ke email Anda." });
@@ -30,13 +31,14 @@ const ForgotPassword: React.FC = () => {
     }
   };
 
-  // Check token validity
   const handleCheckToken = async () => {
     setStatus(null);
     setChecking(true);
     try {
       await axios.post(
-        "https://api-hirely.localto.net/auth/verify-token",
+        // "https://api-hirely.localto.net/auth/verify-token"
+        `${baseURL}/auth/verify-token`
+        ,
         { email, token }
       );
       setStatus({ type: "success", message: "Token valid. Silakan lanjut ubah password." });
@@ -87,7 +89,6 @@ const ForgotPassword: React.FC = () => {
             placeholder="Email"
           />
 
-          {/* Token */}
           <input
             type="text"
             className="border rounded px-3 py-2 text-sm w-full"
@@ -96,7 +97,6 @@ const ForgotPassword: React.FC = () => {
             placeholder="Token"
           />
 
-          {/* Check/Change Password Button */}
           {!tokenValid ? (
             <button
               onClick={handleCheckToken}

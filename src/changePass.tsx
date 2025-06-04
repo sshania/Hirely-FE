@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import logo from "../src/assets/Hirely.png";
 import { useNavigate } from "react-router-dom";
+import { baseURL } from "./environment";
 
-const API_URL = "https://api-hirely.localto.net/auth/reset-password"; // Ganti dengan endpoint kamu
+const API_URL = `${baseURL}/auth/reset-password`;
+// "https://api-hirely.localto.net/auth/reset-password";
 
 const ChangePassword: React.FC = () => {
   const [email, setEmail] = useState("");

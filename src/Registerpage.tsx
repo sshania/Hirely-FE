@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { baseURL } from "./environment";
 
 const RegisterPage: React.FC = () => {
   const location = useLocation();
@@ -70,7 +71,7 @@ const RegisterPage: React.FC = () => {
     try {
       await axios.post(
         // "https://api.hirely.my.id/auth/register",
-        "https://api-hirely.localto.net/auth/register", {
+        `${baseURL}/auth/register`, {
         User_Name: username,
         User_Password: password,
         confirm_password: confirmPassword,

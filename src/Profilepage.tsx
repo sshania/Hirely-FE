@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../src/assets/Hirely.png";
+import { baseURL } from "./environment";
 
 interface Major {
   Major_Id: number;
@@ -31,7 +32,8 @@ const ProfilePage: React.FC = () => {
     axios
       .get<UserData>(
         // "https://api.hirely.my.id/user/data"
-        "https://api-hirely.localto.net/user/data"
+        // "https://api-hirely.localto.net/user/data"
+        `${baseURL}/user/data`
         , {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -136,7 +138,7 @@ const ProfilePage: React.FC = () => {
               Edit Profile
             </button>
             <button
-              onClick={() => navigate("/changePassword")}
+              onClick={() => navigate("/forgotPassword")}
               className="w-full bg-white text-green-700 font-semibold py-2 rounded-lg hover:bg-gray-200"
             >
               Change Password

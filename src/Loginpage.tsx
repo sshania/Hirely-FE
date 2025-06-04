@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { baseURL } from "./environment";
 
 import logo from "../src/assets/Hirely.png";
 
@@ -22,7 +23,8 @@ const LoginPage: React.FC = () => {
     try {
       const response = await axios.post(
         // "https://api.hirely.my.id/auth/login",
-        "https://api-hirely.localto.net/auth/login",
+        // '${baseURL}/auth/login'
+        `${baseURL}/auth/login`,
         {
           email,
           User_Password: password,
