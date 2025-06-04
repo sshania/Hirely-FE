@@ -2,6 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../src/assets/Hirely.png";
+import { baseURL } from "./environment";
 
 interface UserData {
   User_Name: string;
@@ -41,7 +42,8 @@ const EditProfile: React.FC = () => {
     axios
       .get<UserData>(
         // "https://api.hirely.my.id/user/data"
-        "https://b98e-103-80-236-171.ngrok-free.app/user/data"
+        // "https://b98e-103-80-236-171.ngrok-free.app/user/data"
+          `${baseURL}/user/data`
         , {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -75,7 +77,8 @@ const EditProfile: React.FC = () => {
     axios
       .put(
         // "https://api.hirely.my.id/user/update"
-        "https://b98e-103-80-236-171.ngrok-free.app/user/update"
+        // "https://b98e-103-80-236-171.ngrok-free.app/user/update"
+        `${baseURL}/user/update`
         ,
         {
           User_Name: user.User_Name,
@@ -131,7 +134,7 @@ const EditProfile: React.FC = () => {
               <input type="file" id="profilePicInput" accept="image/*" onChange={handleProfilePicChange} className="hidden" />
             </div>
 
-            {/* Form Fields */}
+            {/* Form  */}
             <div className="flex flex-col space-y-4 text-sm">
               <div>
                 <label className="text-white font-medium">Name</label>
@@ -192,7 +195,6 @@ const EditProfile: React.FC = () => {
               </div>
             </div>
 
-            {/* Buttons */}
             <div className="mt-6 flex justify-end space-x-3">
               <button onClick={() => navigate(-1)} className="px-5 py-1.5 rounded border border-red-500 text-red-500 hover:bg-red-600 hover:text-white text-sm">
                 Cancel
